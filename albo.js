@@ -100,5 +100,14 @@ async function run() {
   console.log(`✅ Totale atti ALBO: ${flatResult.length}`);
 }
 
-run();
-setInterval(run, CHECK_INTERVAL);
+async function tick() {
+  try {
+    await run();
+  } catch (error) {
+    console.error("❌ Controllo ALBO fallito:", error);
+  } finally {
+    setTimeout(() => void tick(), CHECK_INTERVAL);
+  }
+}
+
+void tick();

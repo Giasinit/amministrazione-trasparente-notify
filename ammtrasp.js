@@ -258,5 +258,14 @@ async function fetchCategorieURL(categoriaId, page = 1) {
   }
 }
 
-fetchCategorie();
-setInterval(fetchCategorie, CHECK_INTERVAL);
+async function tick() {
+  try {
+    await fetchCategorie();
+  } catch (error) {
+    console.error("❌ Controllo Amministrazione Trasparente fallito:", error);
+  } finally {
+    setTimeout(() => void tick(), CHECK_INTERVAL);
+  }
+}
+
+void tick();
